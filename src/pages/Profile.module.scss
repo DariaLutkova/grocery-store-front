@@ -1,0 +1,24 @@
+.profile {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  .item {
+    display: flex;
+
+    .firstColumn {
+      width: 200px;
+    }
+  }
+
+  li {
+    padding-left: 8px;
+  }
+
+  li:nth-child(odd) {
+    background-color: aliceblue;
+  }
+}

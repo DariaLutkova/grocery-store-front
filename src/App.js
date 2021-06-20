@@ -7,7 +7,10 @@ import {
 } from "react-router-dom";
 import { Layout, Menu } from 'antd';
 
+import HomePage from './pages/Home';
+
 import 'antd/dist/antd.css';
+import styles from './App.module.scss';
 
 const { Header, Content, Footer } = Layout;
 
@@ -16,14 +19,13 @@ export default function App() {
 
   return (
     <Router>
-      <Layout className="layout">
+      <Layout className={styles.layout}>
         <Header>
-          <div className="logo" />
           <Menu theme="dark" mode="horizontal" selectedKeys={[window.location.pathname]}>
             {renderHeader()}
           </Menu>
         </Header>
-        <Content style={{ height: '100vh' }}>
+        <Content className={styles.content}>
           {renderRoutes()}
         </Content>
         <Footer style={{ textAlign: 'center' }}>Darya Lutkova ©2021</Footer>
@@ -34,17 +36,17 @@ export default function App() {
   function renderHeader() {
     if (isAuth) return (
       <>
-        <Menu.Item key="/"><Link to="/">Home</Link></Menu.Item>
+        <Menu.Item key="/"><Link to="/">Главная</Link></Menu.Item>
         <Menu.Item key="/about"><Link to="/about">About</Link></Menu.Item>
-        <Menu.Item key="/profile"><Link to="/profile">Profile</Link></Menu.Item>
+        <Menu.Item key="/profile"><Link to="/profile">Профиль</Link></Menu.Item>
       </>
     );
 
     return (
       <>
-        <Menu.Item key="/"><Link to="/">Home</Link></Menu.Item>
-        <Menu.Item key="/register"><Link to="/register">Register</Link></Menu.Item>
-        <Menu.Item key="/login"><Link to="/login">Login</Link></Menu.Item>
+        <Menu.Item key="/"><Link to="/">Главная</Link></Menu.Item>
+        <Menu.Item key="/register"><Link to="/register">Регистрация</Link></Menu.Item>
+        <Menu.Item key="/login"><Link to="/login">Вход</Link></Menu.Item>
       </>
     );
   }
@@ -59,7 +61,7 @@ export default function App() {
           <h1>Profile</h1>
         </Route>
         <Route path="/">
-          <h1>Home</h1>
+          <HomePage />
         </Route>
       </Switch>
     );
@@ -74,7 +76,7 @@ export default function App() {
         <h1>Register</h1>
       </Route>
       <Route path="/">
-        <h1>Home</h1>
+        <HomePage />
       </Route>
     </Switch>
   )

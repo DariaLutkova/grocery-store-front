@@ -1,0 +1,14 @@
+.modal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 350px;
+
+  .banner {
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+  }
+
+  .info {
+    padding: 20px;
+  }
+}

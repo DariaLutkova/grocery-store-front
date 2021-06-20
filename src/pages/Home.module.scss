@@ -12,3 +12,24 @@
     padding: 20px;
   }
 }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px 0;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.btn {
+  margin-top: 16px;
+  min-width: 165px;
+
+  &.clear {
+    margin-left: 16px;
+  }
+}
+
+.search {
+  width: 100%;
+}

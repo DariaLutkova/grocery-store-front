@@ -8,6 +8,7 @@ import {
 import { Layout, Menu } from 'antd';
 
 import HomePage from './pages/Home';
+import ProfilePage from './pages/Profile';
 
 import 'antd/dist/antd.css';
 import styles from './App.module.scss';
@@ -58,7 +59,7 @@ export default function App() {
           <h1>About</h1>
         </Route>
         <Route path="/profile">
-          <h1>Profile</h1>
+          <ProfilePage />
         </Route>
         <Route path="/">
           <HomePage />

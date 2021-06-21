@@ -8,6 +8,8 @@ import { Layout } from 'antd';
 
 import HomePage from './pages/Home';
 import ProfilePage from './pages/Profile';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
 
 import Header from './components/Header';
 
@@ -49,10 +51,10 @@ export default function App() {
     return (
       <Switch>
         <Route path="/login">
-          <h1>Login</h1>
+          <LoginPage />
         </Route>
         <Route path="/register">
-          <h1>Register</h1>
+          <RegisterPage />
         </Route>
         <Route path="/" exact>
           <HomePage />

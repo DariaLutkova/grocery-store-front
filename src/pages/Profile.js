@@ -6,13 +6,7 @@ import styles from './Profile.module.scss';
 
 const { Title } = Typography;
 
-export default function Profile() {
-  const user = {
-    firstName: 'Анна',
-    lastName: 'Каренина',
-    email: 'anna@mail.ru',
-    loyaltyCard: '88005553535'
-  };
+export default function Profile(props) {
   const data = [
     {
       title: 'Имя',
@@ -45,7 +39,7 @@ export default function Profile() {
             <List.Item>
               <div className={styles.item}>
                 <div className={styles.firstColumn}>{item.title}</div>
-                <div>{user?.[item?.key]}</div>
+                <div>{props.user?.[item?.key]}</div>
               </div>
             </List.Item>
           )}

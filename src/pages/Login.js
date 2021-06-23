@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Input, Button, Typography } from 'antd';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+
+import { getCookie } from "../utils";
 
 import styles from './Login.module.scss';
 
@@ -20,13 +22,32 @@ const tailLayout = {
   },
 };
 
-export default function Login() {
+export default function Login(props) {
+  const history = useHistory();
   const onFinish = (values) => {
-    console.log('Success:', values);
+    const csrftToken = getCookie('csrftoken');
+    fetch('api/auth/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftToken,
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => {
+        if (response.status > 400) {
+          console.log('error', response);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        props.onAuthChange(data);
+        history.push('/');
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.error('Failed:', errorInfo);
   };
 
   return (

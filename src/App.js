@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
 import { Layout } from 'antd';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import HomePage from './pages/Home';
 import ProfilePage from './pages/Profile';
@@ -17,30 +19,34 @@ import 'antd/dist/antd.css';
 import styles from './App.module.scss';
 
 const { Content, Footer } = Layout;
+const client = new ApolloClient({
+  uri: 'http://localhost:8000/graphql/', // your GraphQL Server
+});
 
 export default function App() {
-  const isAuth = false;
+  const [user, setUser] = useState(null);
+  const isAuth = !!user;
+
   return (
-    <Router>
-      <Layout className={styles.layout}>
-        <Header isAuth={isAuth} />
-        <Content className={styles.content}>
-          {renderRoutes()}
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>Darya Lutkova ©2021</Footer>
-      </Layout>
-    </Router>
+    <ApolloProvider client={client}>
+      <Router>
+        <Layout className={styles.layout}>
+          <Header isAuth={isAuth} />
+          <Content className={styles.content}>
+            {renderRoutes()}
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>Darya Lutkova ©2021</Footer>
+        </Layout>
+      </Router>
+    </ApolloProvider>
   );
 
 
   function renderRoutes() {
     if (isAuth) return (
       <Switch>
-        <Route path="/about">
-          <h1>About</h1>
-        </Route>
         <Route path="/profile">
-          <ProfilePage />
+          <ProfilePage user={user} />
         </Route>
         <Route path="/" exact>
           <HomePage />
@@ -51,10 +57,10 @@ export default function App() {
     return (
       <Switch>
         <Route path="/login">
-          <LoginPage />
+          <LoginPage onAuthChange={setUser} />
         </Route>
         <Route path="/register">
-          <RegisterPage />
+          <RegisterPage onAuthChange={setUser} />
         </Route>
         <Route path="/" exact>
           <HomePage />

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Typography } from 'antd';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 import styles from './Register.module.scss';
+import {getCookie} from "../utils";
 
 const { Title } = Typography;
 const layout = {
@@ -20,9 +21,28 @@ const tailLayout = {
   },
 };
 
-export default function Register() {
+export default function Register(props) {
+  const history = useHistory();
   const onFinish = (values) => {
-    console.log('Success:', values);
+    const csrftToken = getCookie('csrftoken');
+    fetch('api/registration/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftToken,
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => {
+        if (response.status > 400) {
+          console.log('error', response);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        props.onAuthChange(data);
+        history.push('/');
+      });
   };
 
   const onFinishFailed = (errorInfo) => {

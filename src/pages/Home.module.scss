@@ -19,6 +19,27 @@
   grid-gap: 10px 0;
   width: 100%;
   margin-top: 16px;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    height: 230px;
+    padding-top: 16px;
+
+    > div:first-child {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+
+      > img {
+        height: inherit;
+        width: auto;
+        max-width: 240px;
+      }
+    }
+  }
 }
 
 .btn {
@@ -32,4 +53,11 @@
 
 .search {
   width: 100%;
+}
+
+.spin {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
 }

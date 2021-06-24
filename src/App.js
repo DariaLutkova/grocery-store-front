@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,6 +17,7 @@ import Header from './components/Header';
 
 import 'antd/dist/antd.css';
 import styles from './App.module.scss';
+import {getCookie} from "./utils";
 
 const { Content, Footer } = Layout;
 const client = new ApolloClient({
@@ -27,11 +28,31 @@ export default function App() {
   const [user, setUser] = useState(null);
   const isAuth = !!user;
 
+  useEffect(() => {
+    const csrftToken = getCookie('csrftoken');
+    fetch('api/user/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftToken,
+      },
+    })
+      .then((response) => {
+        if (response.status > 400) {
+          console.log('error', response);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.isAuth) setUser(data);
+      });
+  }, []);
+
   return (
     <ApolloProvider client={client}>
       <Router>
         <Layout className={styles.layout}>
-          <Header isAuth={isAuth} />
+          <Header isAuth={isAuth} onAuthChange={setUser} />
           <Content className={styles.content}>
             {renderRoutes()}
           </Content>

@@ -40,7 +40,7 @@ export default function Register(props) {
         return response.json();
       })
       .then((data) => {
-        props.onAuthChange(data);
+        props.onAuthChange(values);
         history.push('/');
       });
   };

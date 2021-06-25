@@ -7,6 +7,7 @@ import { getCookie } from "../utils";
 import styles from './Login.module.scss';
 
 const { Title } = Typography;
+const originPath = window.location?.origin;
 const layout = {
   labelCol: {
     span: 6,
@@ -26,7 +27,7 @@ export default function Login(props) {
   const history = useHistory();
   const onFinish = (values) => {
     const csrftToken = getCookie('csrftoken');
-    fetch('api/auth/', {
+    fetch(`${originPath}/api/auth/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,8 +42,10 @@ export default function Login(props) {
         return response.json();
       })
       .then((data) => {
-        props.onAuthChange(data);
-        history.push('/');
+        if (!data.error) {
+          props.onAuthChange(data);
+          history.push('/');
+        }
       });
   };
 

@@ -20,12 +20,13 @@ const tailLayout = {
     span: 16,
   },
 };
+const originPath = window.location?.origin;
 
 export default function Register(props) {
   const history = useHistory();
   const onFinish = (values) => {
     const csrftToken = getCookie('csrftoken');
-    fetch('api/registration/', {
+    fetch(`${originPath}/api/registration/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +41,10 @@ export default function Register(props) {
         return response.json();
       })
       .then((data) => {
-        props.onAuthChange(values);
+        props.onAuthChange({
+          ...values,
+          role: data.role,
+        });
         history.push('/');
       });
   };

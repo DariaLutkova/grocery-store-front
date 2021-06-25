@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { Layout } from 'antd';
+import {Layout} from 'antd';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -12,6 +12,7 @@ import HomePage from './pages/Home';
 import ProfilePage from './pages/Profile';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
+import DashboardPage from './pages/Dashboard';
 
 import Header from './components/Header';
 
@@ -20,8 +21,9 @@ import styles from './App.module.scss';
 import {getCookie} from "./utils";
 
 const { Content, Footer } = Layout;
+const originPath = window.location?.origin;
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql/', // your GraphQL Server
+  uri: `${originPath}/graphql/`, // your GraphQL Server
 });
 
 export default function App() {
@@ -30,7 +32,7 @@ export default function App() {
 
   useEffect(() => {
     const csrftToken = getCookie('csrftoken');
-    fetch('api/user/', {
+    fetch(`${originPath}/api/user/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <Router>
         <Layout className={styles.layout}>
-          <Header isAuth={isAuth} onAuthChange={setUser} />
+          <Header isAuth={isAuth} user={user} onAuthChange={setUser} />
           <Content className={styles.content}>
             {renderRoutes()}
           </Content>
@@ -72,6 +74,9 @@ export default function App() {
         <Route path="/" exact>
           <HomePage />
         </Route>
+        {user?.role === 'operator' && <Route path="/dashboard" exact>
+          <DashboardPage />
+        </Route>}
       </Switch>
     );
 
